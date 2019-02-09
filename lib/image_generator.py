@@ -1,3 +1,4 @@
+# encoding: utf-8
 import cv2
 import os
 import glob

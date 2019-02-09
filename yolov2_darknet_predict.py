@@ -1,3 +1,4 @@
+# encoding: utf-8
 import time
 import cv2
 import numpy as np
@@ -5,6 +6,8 @@ from chainer import serializers, Variable
 import chainer.functions as F
 import argparse
 from yolov2 import *
+
+from pdb import *
 
 class CocoPredictor:
     def __init__(self):
@@ -30,6 +33,7 @@ class CocoPredictor:
     def __call__(self, orig_img):
         orig_input_height, orig_input_width, _ = orig_img.shape
         #img = cv2.resize(orig_img, (640, 640))
+        #set_trace()
         img = reshape_to_yolo_size(orig_img)
         input_height, input_width, _ = img.shape
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
