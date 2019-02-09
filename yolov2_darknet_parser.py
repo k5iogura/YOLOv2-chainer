@@ -1,3 +1,4 @@
+# encoding: utf-8
 import numpy as np
 import chainer
 from chainer import cuda, Function, gradient_check, Variable, optimizers, serializers, utils

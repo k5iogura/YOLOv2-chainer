@@ -1,3 +1,4 @@
+# encoding: utf-8
 import chainer.functions as F
 import numpy as np
 import cv2
