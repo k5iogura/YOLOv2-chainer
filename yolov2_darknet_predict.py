@@ -31,20 +31,33 @@ class CocoPredictor:
         self.model = model
 
     def __call__(self, orig_img):
+        print("orig_img.shape",orig_img.shape)
         orig_input_height, orig_input_width, _ = orig_img.shape
         #img = cv2.resize(orig_img, (640, 640))
-        #set_trace()
         img = reshape_to_yolo_size(orig_img)
+        print("reshaped to orig_img.shape",img.shape)
         input_height, input_width, _ = img.shape
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        print("BGR2RGB")
         img = np.asarray(img, dtype=np.float32) / 255.0
+        print("img/255")
         img = img.transpose(2, 0, 1)
+        print("transepose img.shape",img.shape)
 
 
         # forward
         x_data = img[np.newaxis, :, :, :]
+        print("new axis .shape",x_data.shape)
         x = Variable(x_data)
+        print("variable.shape",x.shape)
+        print("call self.model.predict")
         x, y, w, h, conf, prob = self.model.predict(x)
+        print("predicted x.shape",x.shape)
+        print("predicted y.shape",y.shape)
+        print("predicted w.shape",w.shape)
+        print("predicted h.shape",h.shape)
+        print("predicted conf.shape",conf.shape)
+        print("predicted prob.shape",prob.shape)
 
         # parse results
         _, _, _, grid_h, grid_w = x.shape
