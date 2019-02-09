@@ -7,14 +7,14 @@
 ## Requirements
 
 - python3 and pip3
-- chainer 1.17.0
+- chainer 5.2.0( need up to 2.0.0 version )
 
 ## Environment for test
 
 - ubuntu 16.04
 
 ## prepare
-    $ pip3 install chainer==1.17.0
+    $ pip3 install chainer==5.2.0
     
 ## Download and first move
     $ git clone https://github.com/k5iogura/YOLOv2-chainer
@@ -59,4 +59,35 @@ Some python scripts in this repo. are coded by UTF-8 to use japanese. It causes 
 
 ### Transforming original image size to optimal size
 Input image size of YOLO network will be transformed to optimal size divided by 32. 32 is downsampling ratio of YOLO(1/2^5).  
+
+# Swaping inference engine from chainer to OpenVINO
+
+## Try to transform from chainer to formats supported by OpenVINO
+
+### to caffemodel
+
+    Exception: Cannot convert, name=BroadcastTo-1-1, rank=1,
+    label=BroadcastTo, inputs=['Reshape-0-1']
+
+chainer.exporters does not know Reshape process in YOLOv2.  
+
+### to onnx
+
+first of all, install onnx-chainer
+
+    $ pip3 install onnx-chainer
+    ...
+    Collecting chainer>=3.2.0 (from onnx-chainer)
+    Collecting onnx>=1.3.0 (from onnx-chainer)
+    ...
+    onnx_op_name, opset_versions = mapping.operators[func_name]
+    KeyError: 'BroadcastTo'
+
+onnx_chainer output error.  
+
+## transform chainer .model to IRmodel .bin, .xml
+
+OpenVINO IE outputs inference result as (1,83300) memory layout.  
+
+    83300 = 14*14*5*85 = grids * girds * num * (classes + coords + conf)
 
