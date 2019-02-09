@@ -37,5 +37,26 @@
 Some python scripts in this repo. are coded by UTF-8 to use japanese. It causes error of python runtime, so apply one of bellows.  
 
 - Use Japanese Ubuntu
-- Add *# encoding: utf-8* to top line of some python scripts
+- Add *# encoding: utf-8* to top line of some python scripts(done)
 - Use anaconda python
+
+## Output memory layout of Inference engine of chainer
+**Flow of yolov2_darknet_predict.py and memory layout of in/out predictor.**  
+
+    orig_img.shape (576, 768, 3)             # read "dog.jpg" image by opencv
+    reshaped to orig_img.shape (320, 448, 3) # transform to optimal size
+    BGR2RGB                                  # change BGR to RGB
+    img/255                                  # normalize 0.0 to 1.0
+    transepose img.shape (3, 320, 448)       # transform HWC to CHW
+    new axis .shape (1, 3, 320, 448)         # transform CHW to NCHW
+    variable.shape (1, 3, 320, 448)          # create chainer varable
+    predicted x.shape (1, 5, 1, 10, 14)      # X
+    predicted y.shape (1, 5, 1, 10, 14)      # Y
+    predicted w.shape (1, 5, 1, 10, 14)      # W
+    predicted h.shape (1, 5, 1, 10, 14)      # H
+    predicted conf.shape (1, 5, 1, 10, 14)   # Confidence
+    predicted prob.shape (1, 5, 80, 10, 14)  # Class probabilities
+
+### Transforming original image size to optimal size
+Input image size of YOLO network will be transformed to optimal size divided by 32. 32 is downsampling ratio of YOLO(1/2^5).  
+
