@@ -85,6 +85,12 @@ first of all, install onnx-chainer
 
 onnx_chainer output error.  
 
+## Limitation to convert chainer network definition to onnx or caffemodel  
+
+- L.Bias causes KeyError: 'BroadcastTo'. So do not use L.Bias layer.
+- use_beta option of L.BatchNormalize() must be True. So do not use use_beta=False
+- Rewrite Network definition to pass above 2 items.
+
 ## transform chainer .model to IRmodel .bin, .xml
 
 OpenVINO IE outputs inference result as (1,83300) memory layout.  
