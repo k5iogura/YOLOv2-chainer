@@ -62,18 +62,18 @@ Input image size of YOLO network will be transformed to optimal size divided by 
 
 # Swaping inference engine from chainer to OpenVINO
 
-## Try to transform from chainer to formats supported by OpenVINO
+## Try to transform from chainer to other formats supported by OpenVINO
 
 ### to caffemodel
 
     Exception: Cannot convert, name=BroadcastTo-1-1, rank=1,
     label=BroadcastTo, inputs=['Reshape-0-1']
 
-chainer.exporters does not know Reshape process in YOLOv2.  
+ONNX does not know BroadcastTo operation made by L.Bias in YOLOv2.  
 
 ### to onnx
 
-first of all, install onnx-chainer
+install onnx-chainer  
 
     $ pip3 install onnx-chainer
     ...
@@ -85,7 +85,7 @@ first of all, install onnx-chainer
 
 onnx_chainer output error.  
 
-## Limitation to convert chainer network definition to onnx or caffemodel  
+## Limitations to convert chainer network definition to onnx or caffemodel  
 
 - **L.Bias causes KeyError: 'BroadcastTo'. So do not use L.Bias layer.**
 - **use_beta option of L.BatchNormalize() must be True. So do not use use_beta=False**
