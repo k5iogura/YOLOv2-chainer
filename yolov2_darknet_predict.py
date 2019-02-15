@@ -2,10 +2,11 @@
 import time
 import cv2
 import numpy as np
+import chainer
 from chainer import serializers, Variable
 import chainer.functions as F
 import argparse
-from yolov2 import *
+from yolov2_orig import *
 
 from pdb import *
 
@@ -99,8 +100,9 @@ if __name__ == "__main__":
     print("loading image...")
     orig_img = cv2.imread(image_file)
 
-    predictor = CocoPredictor()
-    nms_results = predictor(orig_img)
+    with chainer.using_config('train',False):
+        predictor = CocoPredictor()
+        nms_results = predictor(orig_img)
 
     # draw result
     for result in nms_results:
