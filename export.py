@@ -22,7 +22,7 @@ with chainer.using_config('train',False):
     print("load onnx model")
     modelx = onnx.load("YOLOv2.onnx")
     print("nodes",len(modelx.graph.node))
-    #for i , node in enumerate(modelx.graph.node):
-    #    print("[Node #{}]".format(i))
-    #    print(node)
-    #    if i==15: break
+    for i , node in enumerate(modelx.graph.node):
+        print("[Node #{}]".format(i))
+        print(node)
+        if i==15: break

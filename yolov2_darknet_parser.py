@@ -10,7 +10,7 @@ from chainer.training import extensions
 import argparse
 from lib.utils import *
 from lib.image_generator import *
-from yolov2 import *
+from yolov2_orig import *
 
 parser = argparse.ArgumentParser(description="指定したパスのweightsファイルを読み込み、chainerモデルへ変換する")
 parser.add_argument('file', help="オリジナルのyolov2のweightsファイルへのパスを指定")

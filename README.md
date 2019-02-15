@@ -21,6 +21,32 @@
     $ cd YOLOv2-chainer
     $ cat model/yolo.weights_* > yolo.weights
     $ python3 yolov2_darknet_parser.py yolo.weights
+    loading yolo.weights
+    loading initial model...
+    1 992
+    2 19680
+    3 93920
+    4 102368
+    5 176608
+    6 472544
+    7 505824
+    8 801760
+    9 1983456
+    10 2115552
+    11 3297248
+    12 3429344
+    13 4611040
+    14 9333728
+    15 9860064
+    16 14582752
+    17 15109088
+    18 19831776
+    19 29273056
+    20 38714336
+    21 67029984
+    22 67465609
+    save weights file to yolov2_darknet.model
+    
     $ python3 yolov2_darknet_predict.py dog.jpg
     loading image...
     loading coco model...
@@ -91,7 +117,7 @@ onnx_chainer output error.
 
 - **L.Bias causes KeyError: 'BroadcastTo'. So do not use L.Bias layer.**
 - **use_beta option of L.BatchNormalize() must be True. So do not use use_beta=False**
-- **Rewrite Network definition to pass above 2 items.**
+- **Rewrite Network definition to keep 2 terms of above.**
 
 ## transform chainer .model to IRmodel .bin, .xml
 
