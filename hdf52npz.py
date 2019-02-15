@@ -6,12 +6,17 @@ import numpy as np
 import chainer
 import chainer.links as L
 from chainer import serializers
-from yolov2_orig import YOLOv2
+#from yolov2_orig import YOLOv2
 
 parser = argparse.ArgumentParser(description="hdf5 to npz transform")
 parser.add_argument('hdf5', help="input hdf5 format")
 parser.add_argument('npz',  help="input npz format")
+parser.add_argument('--model','-m', type=str, default="yolov2_orig",help="target model file")
 args = parser.parse_args()
+
+model_prefix,_ = os.path.splitext(os.path.basename(args.model))
+print("from",model_prefix,"import YOLOv2")
+exec("from "+model_prefix+" import YOLOv2")
 
 print("define model (80,5)")
 model = YOLOv2(80,5)

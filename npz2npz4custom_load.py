@@ -11,7 +11,12 @@ from yolov2 import YOLOv2, load_npz
 parser = argparse.ArgumentParser(description="npz1 to npz transform")
 parser.add_argument('npz1', help="input npz format")
 parser.add_argument('npz2', help="output npz format")
+parser.add_argument('--model','-m', type=str, default="yolov2",help="target model file")
 args = parser.parse_args()
+
+model_prefix,_ = os.path.splitext(os.path.basename(args.model))
+print("from",model_prefix,"import YOLOv2")
+exec("from "+model_prefix+" import YOLOv2")
 
 print("define model (80,5)")
 model = YOLOv2(80,5)
