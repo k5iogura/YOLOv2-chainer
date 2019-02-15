@@ -38,3 +38,10 @@ with chainer.using_config('train',False):
     print("result",result.shape, type(result))
     print("save as npz model", args.npz2)
     serializers.save_npz(args.npz2, model)
+
+    print("serializers.load_npz model",args.npz2)
+    serializers.load_npz(args.npz2, model)
+    print("infer No.2 for dummy data", x.shape)
+    result = model(x)
+    print("result No.2",result.shape, type(result))
+
