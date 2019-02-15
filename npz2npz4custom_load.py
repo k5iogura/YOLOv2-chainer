@@ -8,6 +8,10 @@ import chainer.links as L
 from chainer import serializers
 from yolov2 import YOLOv2, load_npz
 
+def statistics(ndarray):
+    ndarray_ = ndarray.reshape(-1)
+    return np.std(ndarray_), np.mean(ndarray_), np.max(ndarray_), np.min(ndarray_)
+
 parser = argparse.ArgumentParser(description="npz1 to npz transform")
 parser.add_argument('npz1', help="input npz format")
 parser.add_argument('npz2', help="output npz format")
@@ -28,7 +32,8 @@ else:
     print(args.npz1,"not found")
     sys.exit(-1)
 
-x = np.zeros((1, 3, 416, 416), dtype=np.float32)
+#x = np.zeros((1, 3, 416, 416), dtype=np.float32)
+x = np.random.rand(1, 3, 416, 416).astype(np.float32)
 
 chainer.config.train = False
 
@@ -42,6 +47,10 @@ with chainer.using_config('train',False):
     print("serializers.load_npz model",args.npz2)
     serializers.load_npz(args.npz2, model)
     print("infer No.2 for dummy data", x.shape)
-    result = model(x)
-    print("result No.2",result.shape, type(result))
+    result2 = model(x)
+    print("result No.2",result2.shape, type(result2))
+    print("          std/means/max/min")
+    print("original: %11.7f %11.7f %11.7f %11.7f"%statistics(result.data[0]))
+    print("for onnx: %11.7f %11.7f %11.7f %11.7f"%statistics(result2.data[0]))
+    print("finished")
 
