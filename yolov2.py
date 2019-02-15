@@ -129,6 +129,21 @@ class YOLOv2(Chain):
 
         return h
 
+def load_npz(filename, model):
+    print("load_npz",filename)
+    with np.load(filename) as f:
+        weights = dict(f.items())
+
+    for i in range(1, 22):
+        exec('model.conv{0}.W.data = weights["conv{0}/W"]'.format(i))
+        exec('model.bn{0}.avg_mean = weights["bn{0}/avg_mean"]'.format(i))
+        exec('model.bn{0}.avg_var = weights["bn{0}/avg_var"]'.format(i))
+        exec('model.bn{0}.N = weights["bn{0}/N"]'.format(i))
+        exec('model.bn{0}.gamma.data = weights["bn{0}/gamma"]'.format(i))
+        exec('model.bn{0}.beta.data = weights["bias{0}/b"]'.format(i))
+    i = 22
+    exec('model.conv{0}.W.data = weights["conv{0}/W"]'.format(i))
+
 class YOLOv2Predictor(Chain):
     def __init__(self, yolov2):
         super(YOLOv2Predictor, self).__init__(predictor=yolov2)
