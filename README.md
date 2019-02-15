@@ -64,6 +64,8 @@ Input image size of YOLO network will be transformed to optimal size divided by 
 
 ## Try to transform from chainer to other formats supported by OpenVINO
 
+Notice: Transformation from Darknet weights and cfg to tensorflow pb is out of scope of this repo.  
+
 ### to caffemodel
 
     Exception: Cannot convert, name=BroadcastTo-1-1, rank=1,
