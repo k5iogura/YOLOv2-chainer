@@ -7,7 +7,7 @@
 ## Requirements
 
 - python3 and pip3
-- chainer 5.2.0( need up to 2.0.0 version )
+- chainer 5.2.0( need at least 2.0.0 version )
 
 ## Environment for test
 
