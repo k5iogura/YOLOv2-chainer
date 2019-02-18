@@ -137,6 +137,18 @@ Let you see modified version ./yolov2.py.
 And confirm the differences btn ./yolov2.py and ./yolov2_orig.py.  
 Using ./yolov2.py as sample, you can continue bellow sections.  
 
+## Generate from npz correspoding to ./yolov2_orig.py to npz corresponding to ./yolov2.py
+
+    $ python3 npz2npz4custom_load.py yolov2_darknet.model yolov2_darknetNoBias.npz
+    $ ls *.npz
+    yolov2_darknetNoBias.npz
+    
+## Export onnx model via onnx-chainer
+
+    $ python3 export.py
+    $ ls *.onnx
+    yolov2_darknetNoBias.onnx
+
 ## transform chainer .model to IRmodel .bin, .xml
 
 OpenVINO IE outputs inference result as (1,83300) memory layout.  
