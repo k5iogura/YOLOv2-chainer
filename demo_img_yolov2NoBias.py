@@ -149,6 +149,6 @@ if __name__ == "__main__":
             cv2.putText(orig_img, text, (left, top-6), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
             print(text)
 
-        cv2.imshow("w", orig_img)
+        cv2.imshow("image view", orig_img)
         if cv2.waitKey(0)==27:break
 
