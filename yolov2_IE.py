@@ -153,7 +153,7 @@ class YOLOv2Predictor(Chain):
         self.seen = 0
         self.unstable_seen = 5000
 
-        self.IE = IE("FP32/yolov2_darknetNoBias.xml","FP32/yolov2_darknetNoBias.bin","CPU",verbose=True)
+        #self.IE = IE("FP32/yolov2_darknetNoBias.xml","FP32/yolov2_darknetNoBias.bin","CPU",verbose=True)
 
     def __call__(self, input_x, t):
         output = self.predictor(input_x)

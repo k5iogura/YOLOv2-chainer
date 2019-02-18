@@ -7,6 +7,7 @@ from chainer import serializers, Variable
 import chainer.functions as F
 import argparse
 from yolov2_IE import *
+from IEbase import IE
 
 from pdb import *
 
@@ -114,6 +115,10 @@ if __name__ == "__main__":
     parser.add_argument('--image', '-i', type=str, nargs='+',help="")
     parser.add_argument('--device','-d', type=str, default="CPU", help="")
     args = parser.parse_args()
+
+    data_type="FP32"
+    if args.device == "MYRIAD": data_type="FP16"
+    IE(data_type+"/yolov2_darknetNoBias.xml",data_type+"/yolov2_darknetNoBias.bin",args.device,verbose=True)
 
     with chainer.using_config('train',False):
         predictor = CocoPredictor()
