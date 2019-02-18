@@ -131,7 +131,7 @@ onnx_chainer output error.
 - **use_beta option of L.BatchNormalize() must be True. So do not use use_beta=False**
 - **Rewrite Network definition to keep 2 terms of above.**
 
-## Modify chainer model definition avoid onnx-chainer troubles
+## Modify chainer model definition to avoid onnx-chainer troubles
 
 Let you see modified version ./yolov2.py.  
 And confirm the differences btn ./yolov2.py and ./yolov2_orig.py.  
