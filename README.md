@@ -196,3 +196,9 @@ IRmodel FP16@MYRIAD check is abnormally ended.
 Myabe it is in dynamic link library "ie_api.so" file.  
 
 I gave up porting to FP16.  
+
+## Run demo script to infer objects on images with yolov2
+
+    $ python3 demo_img_yolov2NoBias.py -i ./data/*.jpg
+
+![](./files/demo_image_result.jpg)
