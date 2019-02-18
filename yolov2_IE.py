@@ -153,6 +153,8 @@ class YOLOv2Predictor(Chain):
         self.seen = 0
         self.unstable_seen = 5000
 
+        self.IE = IE("FP32/yolov2_darknetNoBias.xml","FP32/yolov2_darknetNoBias.bin","CPU",verbose=True)
+
     def __call__(self, input_x, t):
         output = self.predictor(input_x)
         batch_size, _, grid_h, grid_w = output.shape
@@ -289,7 +291,8 @@ class YOLOv2Predictor(Chain):
 
     def predict(self, input_x):
         print("run IEresult")
-        resie = IEresult("FP32/yolov2_darknetNoBias.xml", "FP32/yolov2_darknetNoBias.bin","CPU", input_x.data[0])
+        #resie = IEresult("FP32/yolov2_darknetNoBias.xml", "FP32/yolov2_darknetNoBias.bin","CPU", input_x.data[0])
+        resie = IE.infer(input_x.data[0])
         print("result:resie.keys",resie.keys())
         print("result:resie[Conv_21].shape",resie['Conv_21'].shape)
         output = Variable(resie['Conv_21'])
