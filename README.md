@@ -137,7 +137,7 @@ Let you see modified version ./yolov2.py.
 And confirm the differences btn ./yolov2.py and ./yolov2_orig.py.  
 Using ./yolov2.py as sample, you can continue bellow sections.  
 
-## Generate from npz correspoding to ./yolov2_orig.py to npz corresponding to ./yolov2.py
+## Generate npz model file corresponding to ./yolov2.py from npz correspoding to ./yolov2_orig.py 
 
     $ python3 npz2npz4custom_load.py yolov2_darknet.model yolov2_darknetNoBias.npz
     $ ls *.npz
@@ -148,6 +148,27 @@ Using ./yolov2.py as sample, you can continue bellow sections.
     $ python3 export.py
     $ ls *.onnx
     yolov2_darknetNoBias.onnx
+
+Here, yolov2_darknetNoBias.onnx.txt include TextDump of onnx model file to confirm and check contents.  
+
+## Generate IRmodel from onnx model file
+
+    $ mo_onnx.py --input_model yolov2_darknetNoBias.onnx --output_dir FP32 --data_type FP32
+    $ mo_onnx.py --input_model yolov2_darknetNoBias.onnx --output_dir FP16 --data_type FP16
+    $ ls FP32 FP16
+    FP16:
+    yolov2_darknetNoBias.bin  yolov2_darknetNoBias.mapping  yolov2_darknetNoBias.xml
+    FP32:
+    yolov2_darknetNoBias.bin  yolov2_darknetNoBias.mapping  yolov2_darknetNoBias.xml
+
+## Check quickly IRmodel file
+
+    $ python3 IEbase.py --bin FP32/yolov2_darknetNoBias.bin --xml FP32/yolov2_darknetNoBias.xml -d CPU
+    * IEsetup FP32/yolov2_darknetNoBias.bin on CPU
+    network in shape n/c/h/w (from xml)= 1 3 416 416
+    input_blob = Input_0
+      net.outputs[ Conv_21 ].shape [1, 425, 13, 13]
+    * IEsetup done 1338.87msec
 
 ## transform chainer .model to IRmodel .bin, .xml
 
