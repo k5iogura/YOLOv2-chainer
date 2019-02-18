@@ -288,15 +288,13 @@ class YOLOv2Predictor(Chain):
         self.anchors = anchors
 
     def predict(self, input_x):
-        print("IEresult")
+        print("run IEresult")
         resie = IEresult("FP32/yolov2_darknetNoBias.xml", "FP32/yolov2_darknetNoBias.bin","CPU", input_x.data[0])
-        print("resie.keys",resie.keys())
-        print("resie Conv_21 .shape",resie['Conv_21'].shape)
-        print("called YOLOv2Predictor as self.predictor")
-#        set_trace()
-        #output = self.predictor(input_x)
+        print("result:resie.keys",resie.keys())
+        print("result:resie[Conv_21].shape",resie['Conv_21'].shape)
         output = Variable(resie['Conv_21'])
-        print("chainer.output.shape",output.shape,type(output))
+        #output = self.predictor(input_x)                       # chainer inference engine
+        print("output.shape",output.shape,type(output))
         batch_size, input_channel, input_h, input_w = input_x.shape
         batch_size, _, grid_h, grid_w = output.shape
         x, y, w, h, conf, prob = F.split_axis(F.reshape(output, (batch_size, self.predictor.n_boxes, self.predictor.n_classes+5, grid_h, grid_w)), (1, 2, 3, 4, 5), axis=2)

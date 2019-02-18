@@ -7,6 +7,20 @@ import cv2
 import argparse
 from openvino.inference_engine import IENetwork, IEPlugin
 
+class IE:
+    def __init__(self,_xml, _bin, _device, verbose=False):
+        self.verbose = verbose
+        self.exec_net, self.plugin, self.input_blob, self.out_blobs = IEsetup(_xml, _bin, _device)
+
+    def infer(in_frame, input_blob, out_blobs):
+        result = IEinfer(self.exec_net, in_frame, self.input_blob, self.out_blobs)
+        return result
+
+    def finish(verbose=False):
+        if verbose:print("finalizing")
+        del self.exec_net
+        del self.plugin
+
 def IEsetup(model_xml, model_bin, device, verbose=False):
     start =time()
     plugin = IEPlugin(device=device, plugin_dirs=None)
