@@ -201,4 +201,4 @@ I gave up porting to FP16.
 
     $ python3 demo_img_yolov2NoBias.py -i ./data/*.jpg
 
-![](./files/demo_image_result.jpg)
+![](./files/demo_img_result.jpg)
