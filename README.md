@@ -67,6 +67,8 @@
     bicycle(59%)
     save results to yolov2_result.jpg
 
+**Review of original chainer version of YOLOv2**  
+
 ![](./files/first_view.png)
 
 ### Notice to prevent UTF-8 coding
