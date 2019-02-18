@@ -78,7 +78,7 @@ If using original repo instead of this repo, some python scripts in original rep
 - Add *# encoding: utf-8* to top line of some python scripts(done)
 - Use anaconda python
 
-## Output memory layout of Inference engine of chainer
+## Investigate output memory layout of Inference engine of chainer
 **Flow of yolov2_darknet_predict.py and memory layout of in/out predictor.**  
 
     orig_img.shape (576, 768, 3)             # read "dog.jpg" image by opencv
