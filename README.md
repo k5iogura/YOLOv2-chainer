@@ -1,5 +1,3 @@
-# Under construction  
-
 # YOLOv2 via Chainer to predict objects and apply its intel NCS
 
 [Original README](./README_original.md)  
@@ -106,10 +104,16 @@ Notice: Transformation from Darknet weights and cfg to tensorflow pb is out of s
 
 ### to caffemodel
 
+If using Bias layer, "BroadcastTo not found" error occurres.  If avoiding Bias layer error, "Transpose not found" error occurres.  
+I gave up using chainer.exporters.caffe exportation.  
+
     Exception: Cannot convert, name=BroadcastTo-1-1, rank=1,
     label=BroadcastTo, inputs=['Reshape-0-1']
-
-ONNX does not know BroadcastTo operation made by L.Bias in YOLOv2.  
+    
+    or
+    
+    Exception: Cannot convert, name=Transpose-44-1, rank=44,
+    label=Transpose, inputs=['Reshape-43-1']
 
 ### to onnx
 
@@ -120,10 +124,13 @@ install onnx-chainer
     Collecting chainer>=3.2.0 (from onnx-chainer)
     Collecting onnx>=1.3.0 (from onnx-chainer)
     ...
+    
+    $ python3 export.py
+    ...
     onnx_op_name, opset_versions = mapping.operators[func_name]
     KeyError: 'BroadcastTo'
 
-onnx_chainer output error.  
+onnx_chainer "BroadcastTo not found" error.  
 
 ## Limitations to convert chainer network definition to onnx or caffemodel  
 
@@ -131,9 +138,61 @@ onnx_chainer output error.
 - **use_beta option of L.BatchNormalize() must be True. So do not use use_beta=False**
 - **Rewrite Network definition to keep 2 terms of above.**
 
-## transform chainer .model to IRmodel .bin, .xml
+## Modify chainer model definition to avoid onnx-chainer troubles
 
-OpenVINO IE outputs inference result as (1,83300) memory layout.  
+Let you see modified version ./yolov2.py.  
+And confirm the differences btn ./yolov2.py and ./yolov2_orig.py.  
+Using ./yolov2.py as sample, you can continue bellow sections.  
 
-    83300 = 14*14*5*85 = grids * girds * num * (classes + coords + conf)
+## Generate npz model file corresponding to ./yolov2.py from npz correspoding to ./yolov2_orig.py 
 
+    $ python3 npz2npz4custom_load.py yolov2_darknet.model yolov2_darknetNoBias.npz
+    $ ls *.npz
+    yolov2_darknetNoBias.npz
+    
+## Export onnx model via onnx-chainer
+
+    $ python3 export.py
+    $ ls *.onnx
+    yolov2_darknetNoBias.onnx
+
+Here, yolov2_darknetNoBias.onnx.txt include TextDump of onnx model file to confirm and check contents.  
+
+## Generate IRmodel from onnx model file
+
+    $ mo_onnx.py --input_model yolov2_darknetNoBias.onnx --output_dir FP32 --data_type FP32
+    $ mo_onnx.py --input_model yolov2_darknetNoBias.onnx --output_dir FP16 --data_type FP16
+    $ ls FP32 FP16
+    FP16:
+    yolov2_darknetNoBias.bin  yolov2_darknetNoBias.mapping  yolov2_darknetNoBias.xml
+    FP32:
+    yolov2_darknetNoBias.bin  yolov2_darknetNoBias.mapping  yolov2_darknetNoBias.xml
+
+## Check quickly IRmodel file
+
+**IRmodel FP32@CPU check is normally ended good.**  
+
+    $ python3 IEbase.py --bin FP32/yolov2_darknetNoBias.bin --xml FP32/yolov2_darknetNoBias.xml -d CPU
+    * IEsetup FP32/yolov2_darknetNoBias.bin on CPU
+    network in shape n/c/h/w (from xml)= 1 3 416 416
+    input_blob = Input_0
+      net.outputs[ Conv_21 ].shape [1, 425, 13, 13]
+    * IEsetup done 1338.87msec
+
+IRmodel FP16@MYRIAD check is abnormally ended.  
+
+    $ python3 IEbase.py --bin FP16/yolov2_darknetNoBias.bin --xml FP16/yolov2_darknetNoBias.xml -d MYRIAD
+    * IEsetup FP16/yolov2_darknetNoBias.bin on MYRIAD
+    Traceback (most recent call last):
+      File "IEbase.py", line 73, in <module>
+        exec_net, plugin, input_blob, out_blobs = IEsetup(args.xml, args.bin, args.device, verbose=True)
+      File "IEbase.py", line 19, in IEsetup
+        exec_net = plugin.load(network=net, num_requests=1)
+      File "ie_api.pyx", line 389, in openvino.inference_engine.ie_api.IEPlugin.load
+      File "ie_api.pyx", line 400, in openvino.inference_engine.ie_api.IEPlugin.load
+    RuntimeError: AssertionFailed: newDims[newPerm[i]] == 1
+
+**I can not find "ie_api.pyx" source code everywhere.**
+Myabe it is in dynamic link library "ie_api.so" file.  
+
+I gave up porting to FP16.  
