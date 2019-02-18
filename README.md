@@ -199,7 +199,7 @@ I gave up porting to FP16.
 
 ## Run demo script to infer objects on images with yolov2
 
-    $ python3 demo_img_yolov2NoBias.py -i horses.jpg
+    $ python3 demo_img_yolov2NoBias.py -i horses.jpg -d CPU
 
 ![](./files/demo_img_result.jpg)
 
