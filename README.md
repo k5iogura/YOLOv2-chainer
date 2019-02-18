@@ -199,6 +199,8 @@ I gave up porting to FP16.
 
 ## Run demo script to infer objects on images with yolov2
 
-    $ python3 demo_img_yolov2NoBias.py -i ./data/*.jpg
+    $ python3 demo_img_yolov2NoBias.py -i horses.jpg
 
 ![](./files/demo_img_result.jpg)
+
+**Notice:** Many horses are found out but this inference job works fine only on **CPU**.  
