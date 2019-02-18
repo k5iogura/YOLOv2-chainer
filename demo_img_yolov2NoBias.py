@@ -45,10 +45,10 @@ class CocoPredictor:
         ]
 
         # load model
-        print("loading coco model...")
+        #print("loading coco model...")
         yolov2 = YOLOv2(n_classes=self.n_classes, n_boxes=self.n_boxes)
         #serializers.load_hdf5(weight_file, yolov2) # load saved model
-        load_npz(weight_file,yolov2)    # For NoBias YOLOv2 model
+        #load_npz(weight_file,yolov2)    # For NoBias YOLOv2 model
         model = YOLOv2Predictor(yolov2)
         model.init_anchor(anchors)
         model.predictor.train = False
@@ -144,7 +144,6 @@ if __name__ == "__main__":
             cv2.putText(orig_img, text, (left, top-6), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
             print(text)
 
-        #cv2.imwrite("yolov2_result.jpg", orig_img)
         cv2.imshow("w", orig_img)
         if cv2.waitKey(0)==27:break
 
