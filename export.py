@@ -1,6 +1,7 @@
 # encoding: utf-8
 import numpy as np
 import chainer
+# from chainer.exporters import caffe
 from chainer import serializers
 import chainer.links as L
 import onnx_chainer
@@ -19,6 +20,8 @@ x = np.zeros((1, 3, 416, 416), dtype=np.float32)
 chainer.config.train = False
 
 with chainer.using_config('train',False):
+#     print("save as caffemodel")
+#     caffe.export(model, [chainer.Variable(x)], None, True,'test')
     print("save as onnx model")
     onnx_model = onnx_chainer.export(model, x, filename=onnx_weight_file, save_text=True)
     print("try to load onnx model in NoBias-YOLOv2")
