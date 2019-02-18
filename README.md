@@ -17,8 +17,8 @@
     $ pip3 install chainer==5.2.0
     
 ## Download and first move
-    $ git clone https://github.com/k5iogura/YOLOv2-chainer
-    $ cd YOLOv2-chainer
+    $ git clone *this_repo*
+    $ cd *this_repo* directory
     $ cat model/yolo.weights_* > yolo.weights
     $ python3 yolov2_darknet_parser.py yolo.weights
     loading yolo.weights
