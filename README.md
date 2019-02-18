@@ -47,20 +47,32 @@
     22 67465609
     save weights file to yolov2_darknet.model
     
-    $ python3 yolov2_darknet_predict.py dog.jpg
+    $ python3 yolov2_darknet_predict.py dog.jpg 
     loading image...
     loading coco model...
-    person(81%)
-    person(65%)
-    person(73%)
-    person(74%)
-    person(75%)
+    orig_img.shape (576, 768, 3)
+    reshaped to orig_img.shape (320, 448, 3)
+    BGR2RGB
+    img/255
+    transepose img.shape (3, 320, 448)
+    new axis .shape (1, 3, 320, 448)
+    variable.shape (1, 3, 320, 448)
+    call self.model.predict
+    predicted x.shape (1, 5, 1, 10, 14)
+    predicted y.shape (1, 5, 1, 10, 14)
+    predicted w.shape (1, 5, 1, 10, 14)
+    predicted h.shape (1, 5, 1, 10, 14)
+    predicted conf.shape (1, 5, 1, 10, 14)
+    predicted prob.shape (1, 5, 80, 10, 14)
+    car(76%)
+    dog(66%)
+    bicycle(59%)
     save results to yolov2_result.jpg
 
 ![](./files/first_view.png)
 
 ### Notice to prevent UTF-8 coding
-Some python scripts in this repo. are coded by UTF-8 to use japanese. It causes error of python runtime, so apply one of bellows.  
+If using original repo instead of this repo, some python scripts in original repo are coded by UTF-8 to use japanese. It causes error of python runtime, so apply one of bellows.  
 
 - Use Japanese Ubuntu
 - Add *# encoding: utf-8* to top line of some python scripts(done)
